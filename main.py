@@ -71,15 +71,15 @@ class Aplicacion():  # creacion de la ventana
         Ganadores = []
         start_time = time()
         for m in range(poblacion):
-            Matriz.append(Funciones.cadenaN(nr + 1))
+            Matriz.append(Funciones.generar_individuo(nr + 1))
         for i in range(poblacion):
             print("Individuo", (i + 1), ": ", Matriz[i])
         for secuencia in range(re):
             print("Repeticion ", secuencia + 1)
-            Fitnes = (Funciones.valoracion(Matriz, poblacion, nr))
+            Fitnes = (Funciones.calcular_fitness(Matriz, poblacion, nr))
             axx = Fitnes.count(0)
             Ganadores = (Funciones.torneo(Fitnes, poblacion))
-            probCruce = Funciones.Probabilidad()
+            probCruce = Funciones.generar_probabilidad()
             if (probCruce > proCruse):
                 hijos = []
                 # print("hijos igual a los padres")
@@ -89,21 +89,21 @@ class Aplicacion():  # creacion de la ventana
                     hij = Matriz[Ganadores[hj]]
                     hijos.append(hij)
             else:
-                hijos = Funciones.cruse(Ganadores, Matriz, nr)
-            probMutacion = Funciones.Probabilidad()
+                hijos = Funciones.cruce(Ganadores, Matriz, nr)
+            probMutacion = Funciones.generar_probabilidad()
             if (probMutacion > proMutacion):
                 # print("sin mutacion")
                 pass
             else:
                 for hm in range(2):
-                    hijos[hm] = Funciones.mutacion_un_hijo(hijos[hm], nr)
+                    hijos[hm] = Funciones.mutar_individuo(hijos[hm], nr)
             # Autor Andres707
             # Matriz = Funciones.seleccion(Ganadores,hijos,Matriz,nr)
             for i in range(2):
-                Matriz = Funciones.seleccion2(hijos[i],Matriz,poblacion,nr,Fitnes)
+                Matriz = Funciones.seleccionar_con_torneo_agrupado(hijos[i],Matriz,poblacion,nr,Fitnes)
         elapsed_time = time() - start_time
         print("-------------------------Fin-----------------------------------")
-        Fitnes = (Funciones.valoracion(Matriz, poblacion, nr))
+        Fitnes = (Funciones.calcular_fitness(Matriz, poblacion, nr))
         Ganador = 0
         libro = open('Ganadores.txt', 'a')
         for i in range(poblacion):

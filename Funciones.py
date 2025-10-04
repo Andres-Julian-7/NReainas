@@ -2,208 +2,297 @@ from random import shuffle
 import random
 import math
 
-
-# Probabilidad
-from typing import List, Any, Union
-
-
-def Probabilidad():
-    ra = round(random.random(), 2)
-    return ra
+# Constantes
+NUMERO_HIJOS = 2
+NUMERO_CANDIDATOS_TORNEO = 2
+NUMERO_GRUPOS_SELECCION = 3
+TAMANO_GRUPO_SELECCION = 10
+NUMERO_INDIVIDUOS_COMPARACION = 4
 
 
-# Poblacion
-def cadenaN(numerolimite):
-    x = [i for i in range(1, numerolimite)]
-    shuffle(x)
-    return x
+def generar_probabilidad():
+    """Genera un número aleatorio entre 0 y 1 con 2 decimales."""
+    return round(random.random(), 2)
 
 
-# Valoracion
-def valoracion(Matriz, np, nr):
-    Valor = []
-    contador = 0
-    for m in range(np):
-        matriz = Matriz[m]
-        for i in range(nr):
-            oi = matriz[i]
-            for j in range(nr):
-                oj = matriz[j]
-                if (i != j):
-                    _v1 = math.fabs(oi - oj)
-                    _v2 = math.fabs(i - j)
-                    if (_v1 == _v2):
-                        contador = contador + 1
-        contador = round(contador / 2, 0)
-        Valor.append(contador)
-        contador = contador * 0
-    return Valor
+def generar_individuo(numero_limite):
+    """
+    Genera un individuo (permutación) para el problema de las N-Reinas.
+
+    Args:
+        numero_limite: Número de elementos en la permutación (0 a numero_limite-1)
+
+    Returns:
+        Lista con números del 0 a numero_limite-1 en orden aleatorio
+    """
+    individuo = [i for i in range(numero_limite)]
+    shuffle(individuo)
+    return individuo
 
 
-# torneo
-def torneo(valores, poblacion):
-    Ganadores = []
-    for i in range(2):
-        a1 = random.randrange(1, poblacion)
-        a2 = random.randrange(1, poblacion)
-        bandera = True
-        while (bandera):
-            if (a1 == a2):
-                a2 = random.randrange(1, poblacion)
-                a1 = random.randrange(1, poblacion)
-            else:
-                bandera = False
-        aa1 = valores[a1]
-        aa2 = valores[a2]
-        if (aa1 < aa2):
-            Ganadores.append(a1)
+def calcular_fitness(poblacion, num_individuos, num_reinas):
+    """
+    Calcula el fitness (número de conflictos) para cada individuo.
+
+    Args:
+        poblacion: Lista de individuos
+        num_individuos: Número de individuos en la población
+        num_reinas: Número de reinas (tamaño del tablero)
+
+    Returns:
+        Lista con el fitness de cada individuo
+    """
+    fitness = []
+    for m in range(num_individuos):
+        individuo = poblacion[m]
+        conflictos = 0
+
+        for i in range(num_reinas):
+            posicion_i = individuo[i]
+            for j in range(num_reinas):
+                posicion_j = individuo[j]
+                if i != j:
+                    diferencia_vertical = math.fabs(posicion_i - posicion_j)
+                    diferencia_horizontal = math.fabs(i - j)
+                    if diferencia_vertical == diferencia_horizontal:
+                        conflictos += 1
+
+        conflictos = round(conflictos / 2, 0)
+        fitness.append(conflictos)
+
+    return fitness
+
+
+def torneo(fitness_valores, tamano_poblacion):
+    """
+    Selecciona dos ganadores mediante torneo binario.
+
+    Args:
+        fitness_valores: Lista con fitness de cada individuo
+        tamano_poblacion: Tamaño de la población
+
+    Returns:
+        Lista con índices de los dos ganadores
+    """
+    ganadores = []
+
+    for _ in range(NUMERO_CANDIDATOS_TORNEO):
+        candidato1 = random.randrange(0, tamano_poblacion)
+        candidato2 = random.randrange(0, tamano_poblacion)
+
+        # Asegurar que los candidatos sean diferentes
+        while candidato1 == candidato2:
+            candidato2 = random.randrange(0, tamano_poblacion)
+            candidato1 = random.randrange(0, tamano_poblacion)
+
+        fitness_candidato1 = fitness_valores[candidato1]
+        fitness_candidato2 = fitness_valores[candidato2]
+
+        if fitness_candidato1 < fitness_candidato2:
+            ganadores.append(candidato1)
         else:
-            Ganadores.append(a2)
-    return Ganadores
+            ganadores.append(candidato2)
+
+    return ganadores
 
 
-# cruse
-def cruse(Ganadores, matriz, nr):
+def cruce(indices_ganadores, poblacion, num_reinas):
+    """
+    Realiza cruce de un punto entre dos padres.
+
+    Args:
+        indices_ganadores: Índices de los padres seleccionados
+        poblacion: Población actual
+        num_reinas: Número de reinas
+
+    Returns:
+        Lista con dos hijos generados
+    """
     hijos = []
-    hijo = []
-    Ganadores[0] = Ganadores[0] - 1
-    Ganadores[1] = Ganadores[1] - 1
-    a1 = random.randrange(1, nr)
-    # print('Alelo donde se segmenta: ',a1)
-    ax1 = a1
-    for j in range(2):
-        for i in range(a1):
-            hijo.append((matriz[Ganadores[j]][i]))
-        for m in range(nr):
-            if (j == 0):
-                a = hijo.count(matriz[Ganadores[1]][m])
-                if (a == 0):
-                    hijo.insert(ax1, matriz[Ganadores[1]][m])
-                ax1 = ax1 + 1
-            else:
-                a = hijo.count(matriz[Ganadores[0]][m])
-                if (a == 0):
-                    hijo.insert(ax1, matriz[Ganadores[0]][m])
-                ax1 = ax1 + 1
+    indices_ganadores[0] = indices_ganadores[0] - 1
+    indices_ganadores[1] = indices_ganadores[1] - 1
+
+    punto_cruce = random.randrange(1, num_reinas)
+
+    for j in range(NUMERO_HIJOS):
+        hijo = []
+
+        # Copiar genes hasta el punto de cruce
+        for i in range(punto_cruce):
+            hijo.append(poblacion[indices_ganadores[j]][i])
+
+        posicion_insercion = punto_cruce
+
+        # Completar con genes del otro padre
+        for m in range(num_reinas):
+            padre_contrario = 1 if j == 0 else 0
+            gen = poblacion[indices_ganadores[padre_contrario]][m]
+
+            if gen not in hijo:
+                hijo.insert(posicion_insercion, gen)
+                posicion_insercion += 1
+
         hijos.append(hijo)
-        hijo = hijo * 0
-        ax1 = a1
+
     return hijos
 
 
-# mutacion
-def mutacion_un_hijo(hijo, nr):
-    r1 = random.randrange(nr)
-    r2 = random.randrange(nr)
-    G1 = hijo[r1]
-    G2 = hijo[r2]
-    hijo[r1] = G2
-    hijo[r2] = G1
-    return hijo
+def mutar_individuo(individuo, num_reinas):
+    """
+    Realiza mutación por intercambio de dos genes aleatorios.
+
+    Args:
+        individuo: Individuo a mutar
+        num_reinas: Número de reinas
+
+    Returns:
+        Individuo mutado
+    """
+    posicion1 = random.randrange(num_reinas)
+    posicion2 = random.randrange(num_reinas)
+
+    gen1 = individuo[posicion1]
+    gen2 = individuo[posicion2]
+
+    individuo[posicion1] = gen2
+    individuo[posicion2] = gen1
+
+    return individuo
 
 
-# seleccion
-def seleccion(padres, hijos, matriz, nr):
-    # Insertar padres e hijos a individuos
-    padres[0] = padres[0] - 1
-    padres[1] = padres[1] - 1
-    dk = []
-    individuo = hijos
-    for i in range(2):
-        individuo.append(matriz[padres[i]])
-    valor = valoracion(individuo, 4, nr)  # Fitness
-    # Se busca al ganador
-    ganador = 0
+def seleccion(indices_padres, hijos, poblacion, num_reinas):
+    """
+    Selecciona los mejores entre padres e hijos (no utilizada actualmente).
+
+    Args:
+        indices_padres: Índices de los padres
+        hijos: Lista de hijos generados
+        poblacion: Población actual
+        num_reinas: Número de reinas
+
+    Returns:
+        Población actualizada
+    """
+    indices_padres[0] = indices_padres[0] - 1
+    indices_padres[1] = indices_padres[1] - 1
+
+    distancias = []
+    individuos = hijos[:]
+
+    for i in range(NUMERO_CANDIDATOS_TORNEO):
+        individuos.append(poblacion[indices_padres[i]])
+
+    fitness = calcular_fitness(individuos, NUMERO_INDIVIDUOS_COMPARACION, num_reinas)
+
+    # Buscar el mejor individuo
+    indice_mejor = 0
     contador = 0
-    for i in range(4):
-        if valor[ganador] > valor[i]:
-            ganador = i
-    a = 0  # Ganador 2
-    for m in range(4):
-        x = individuo[ganador]
-        if ganador == m:
-            dk.append(0)
+    for i in range(NUMERO_INDIVIDUOS_COMPARACION):
+        if fitness[indice_mejor] > fitness[i]:
+            indice_mejor = i
+
+    # Calcular distancia del mejor con los demás
+    indice_mas_distante = 0
+    for m in range(NUMERO_INDIVIDUOS_COMPARACION):
+        individuo_mejor = individuos[indice_mejor]
+        if indice_mejor == m:
+            distancias.append(0)
         else:
-            for i in range(nr):
-                if x[i] != individuo[m][i]:
-                    contador = contador + 1
-            dk.append(contador)
-        if dk[a] < dk[m]:
-            a = m
-            # 3 = p2
-            # 2 = p1
-    if ganador == 3:
-        if a == 2 or a == 3:
+            for i in range(num_reinas):
+                if individuo_mejor[i] != individuos[m][i]:
+                    contador += 1
+            distancias.append(contador)
+
+        if distancias[indice_mas_distante] < distancias[m]:
+            indice_mas_distante = m
+
+    # Actualizar población
+    if indice_mejor == 3:
+        if indice_mas_distante == 2 or indice_mas_distante == 3:
             pass
-        elif ganador == 2:
-            matriz[padres[0]] = individuo[a]
-    elif ganador == 0 or ganador == 1:
-        matriz[padres[0]] = individuo[ganador]
-        if a == 0 or a == 1:
-            matriz[padres[1]] = individuo[a]
-    return matriz
+        elif indice_mejor == 2:
+            poblacion[indices_padres[0]] = individuos[indice_mas_distante]
+    elif indice_mejor == 0 or indice_mejor == 1:
+        poblacion[indices_padres[0]] = individuos[indice_mejor]
+        if indice_mas_distante == 0 or indice_mas_distante == 1:
+            poblacion[indices_padres[1]] = individuos[indice_mas_distante]
 
-# 2
-def seleccion2(hijo,Matriz,np,nr,fitness):
-    grupos = 3
-    s = 10
-    cf = []
-    cfa = []
-    ap = []
-    cap = []
-    for i in range(grupos):
-        for c in range(s):
-            ra = random.randint(0, (np-1))
-            cfa.append(Matriz[ra])
-            cap.append([c, ra,fitness[ra]])
-        cf.append(cfa)
-        cfa = []
-        ap.append(cap)
-        cap = []
+    return poblacion
 
-    ia = []
-    contador = 0
-    for i in range(grupos):
-        x = cf[i]
-        for c in range(s):
-            aux = x[c]
-            for dh in range(nr):
-                if hijo[dh] == aux[dh]:
-                   contador = contador + 1
-            ia.append([i,c,contador])
-            contador = 0
 
-    m1 = 0
-    for i in range(9):
-        if ia[i][2] <= m1:
-            m1 = ia[i][2]
-            m11 = ia[i]
-        elif m1 == 0:
-            m11 = ia[i]
-    m2 = 0
-    for a in range(10, 19):
-        if ia[a][2] <= m2:
-            m2 = ia[a][2]
-            m22 = ia[a]
-        elif m2 == 0:
-            m22 = ia[a]
-    m3 = 0
-    for b in range(20, 29):
-        if ia[b][2] <= m3:
-            m3= ia[b][2]
-            m33 = ia[b]
-        elif m3 == 0:
-            m33 = ia[b]
-    gan = 0
-    for i in range(3):
-       # print(ap[i][m11[i]][2])
-        if gan > ap[i][m11[i]][2]:
-            gan = ap[i][m11[i]][2]
-            ganador = ap[i][m11[i]]
-        elif gan == 0:
-            ganador = ap[i][m11[i]]
-    #print(ganador)
-    #print(Matriz[ganador[1]])
-    Matriz[ganador[1]] = hijo
-    #print(Matriz[ganador[1]])
-    return Matriz
+def seleccionar_con_torneo_agrupado(hijo, poblacion, num_individuos, num_reinas, fitness):
+    """
+    Selecciona y reemplaza el peor individuo usando torneo agrupado.
+
+    Args:
+        hijo: Nuevo individuo a insertar
+        poblacion: Población actual
+        num_individuos: Número de individuos
+        num_reinas: Número de reinas
+        fitness: Fitness de la población actual
+
+    Returns:
+        Población actualizada
+    """
+    grupos_individuos = []
+    grupos_info = []
+
+    # Crear grupos aleatorios
+    for i in range(NUMERO_GRUPOS_SELECCION):
+        individuos_grupo = []
+        info_grupo = []
+
+        for c in range(TAMANO_GRUPO_SELECCION):
+            indice_aleatorio = random.randint(0, num_individuos - 1)
+            individuos_grupo.append(poblacion[indice_aleatorio])
+            info_grupo.append([c, indice_aleatorio, fitness[indice_aleatorio]])
+
+        grupos_individuos.append(individuos_grupo)
+        grupos_info.append(info_grupo)
+
+    # Calcular similitud con el hijo para cada individuo de los grupos
+    similitudes = []
+    for i in range(NUMERO_GRUPOS_SELECCION):
+        grupo = grupos_individuos[i]
+        for c in range(TAMANO_GRUPO_SELECCION):
+            individuo = grupo[c]
+            genes_iguales = 0
+
+            for posicion in range(num_reinas):
+                if hijo[posicion] == individuo[posicion]:
+                    genes_iguales += 1
+
+            similitudes.append([i, c, genes_iguales])
+
+    # Encontrar el menos similar en cada grupo
+    menos_similar_grupo1 = similitudes[0]
+    for i in range(1, TAMANO_GRUPO_SELECCION):
+        if similitudes[i][2] <= menos_similar_grupo1[2]:
+            menos_similar_grupo1 = similitudes[i]
+
+    menos_similar_grupo2 = similitudes[TAMANO_GRUPO_SELECCION]
+    for a in range(TAMANO_GRUPO_SELECCION, 2 * TAMANO_GRUPO_SELECCION):
+        if similitudes[a][2] <= menos_similar_grupo2[2]:
+            menos_similar_grupo2 = similitudes[a]
+
+    menos_similar_grupo3 = similitudes[2 * TAMANO_GRUPO_SELECCION]
+    for b in range(2 * TAMANO_GRUPO_SELECCION, 3 * TAMANO_GRUPO_SELECCION):
+        if similitudes[b][2] <= menos_similar_grupo3[2]:
+            menos_similar_grupo3 = similitudes[b]
+
+    # Encontrar el peor fitness entre los menos similares
+    peor_fitness = 0
+    peor_individuo = None
+
+    menos_similares = [menos_similar_grupo1, menos_similar_grupo2, menos_similar_grupo3]
+    for i, menos_similar in enumerate(menos_similares):
+        fitness_actual = grupos_info[i][menos_similar[1]][2]
+
+        if peor_fitness < fitness_actual or peor_individuo is None:
+            peor_fitness = fitness_actual
+            peor_individuo = grupos_info[i][menos_similar[1]]
+
+    # Reemplazar el peor individuo con el hijo
+    poblacion[peor_individuo[1]] = hijo
+
+    return poblacion

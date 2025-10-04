@@ -1,7 +1,6 @@
 # 🔷 Algoritmo Genético para el Problema de las N-Reinas
 
 ![Python](https://img.shields.io/badge/Python-3.12.8-blue.svg)
-![License](https://img.shields.io/badge/License-MIT-green.svg)
 ![Status](https://img.shields.io/badge/Status-Active-success.svg)
 
 Implementación de un **Algoritmo Genético** con interfaz gráfica para resolver el clásico problema de las N-Reinas utilizando técnicas de computación evolutiva.

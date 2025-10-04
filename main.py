@@ -1,7 +1,3 @@
-"""
-    Autor Andres707
-"""
-
 import tkinter as tk
 from tkinter import ttk, scrolledtext, messagebox
 from time import time
@@ -12,7 +8,7 @@ class Aplicacion():
     def __init__(self):
         self.raiz = tk.Tk()
         self.raiz.title('Algoritmo Genético - N-Reinas')
-        self.raiz.geometry('600x500')
+        self.raiz.geometry('800x500')
         self.raiz.minsize(600, 500)
         self.raiz.configure(bg='#f0f0f0')
 
@@ -339,7 +335,6 @@ class Aplicacion():
         print(f"Soluciones óptimas encontradas (fitness=0): {num_soluciones_optimas}")
         print(f"Mejor individuo: {mejor_individuo}")
         print(f"Fitness del mejor: {mejor_fitness}")
-        print("Autor: Andres707")
         print("="*60)
 
         # Formatear resultados para la interfaz y portapapeles
@@ -351,7 +346,6 @@ class Aplicacion():
             f"Soluciones óptimas (fitness=0): {num_soluciones_optimas}\n"
             f"Mejor individuo: {mejor_individuo}\n"
             f"Fitness del mejor: {mejor_fitness}\n"
-            f"Autor: Andres707\n"
             f"{'='*50}\n"
         )
 

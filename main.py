@@ -1,58 +1,190 @@
+"""
+    Autor Andres707
+"""
+
 import tkinter as tk
-from tkinter import *  # Carga módulo tk (widgets estándar)
-from tkinter import ttk  # Carga ttk (para widgets nuevos 8.5+)
+from tkinter import ttk, scrolledtext, messagebox
 from time import time
 import Funciones
 
 
-class Aplicacion():  # creacion de la ventana
+class Aplicacion():
     def __init__(self):
-        self.raiz = Tk()
-        self.raiz.geometry('300x220')
-        self.raiz.configure(bg='beige')
-        self.raiz.title('Aplicación')
-        # ------------------------Label---------------------------
-        self.mensajeNR = Label(self.raiz, text="Numero de reinas", fg="black")
-        self.mensajeNR.pack()
-        self.mensajePO = Label(self.raiz, text="Numero de Individuos", fg="black")
-        self.mensajePO.pack()
-        self.mensajeRE = Label(self.raiz, text="Numero de Repeticiones", fg="black")
-        self.mensajeRE.pack()
-        self.mensajePC = Label(self.raiz, text="Probabilidad de cruce", fg="black")
-        self.mensajePC.pack()
-        self.mensajePM = Label(self.raiz, text="Probabilidad de Mutacion", fg="black")
-        self.mensajePM.pack()
+        self.raiz = tk.Tk()
+        self.raiz.title('Algoritmo Genético - N-Reinas')
+        self.raiz.geometry('600x500')
+        self.raiz.minsize(600, 500)
+        self.raiz.configure(bg='#f0f0f0')
 
-        # ------------------------Cajas---------------------------
-        self.caja_NR = ttk.Entry(self.raiz, justify=tk.LEFT)
-        self.caja_PO = ttk.Entry(self.raiz, justify=tk.LEFT)
-        self.caja_RE = ttk.Entry(self.raiz, justify=tk.LEFT)
-        self.caja_PC = ttk.Entry(self.raiz, justify=tk.LEFT)
-        self.caja_PM = ttk.Entry(self.raiz, justify=tk.LEFT)
-        # ------------------------Botones---------------------------
-        self.botonSA = ttk.Button(self.raiz, text='Salir', command=self.raiz.destroy).pack(side=BOTTOM)
-        self.botonIn = ttk.Button(self.raiz, text="Iniciar", command=self.algoritmo).pack(side=BOTTOM)
-        # ------------------------Posicion---------------------------
-        self.mensajeNR.place(x=10, y=5)
-        self.caja_NR.place(x=10, y=25)
-        self.mensajePO.place(x=150, y=5)
-        self.caja_PO.place(x=150, y=25)
-        self.mensajeRE.place(x=5, y=50)
-        self.caja_RE.place(x=10, y=70)
-        self.mensajePC.place(x=150, y=50)
-        self.caja_PC.place(x=150, y=70)
-        self.mensajePM.place(x=10, y=100)
-        self.caja_PM.place(x=160, y=100)
-        # ------------------------Valores estaticos------------------
-        self.caja_NR.insert(0, 8)
-        self.caja_PO.insert(0, 1000)
-        self.caja_RE.insert(0, 1000)
-        self.caja_PC.insert(0, 0.85)
-        self.caja_PM.insert(0, 0.1)
-        self.caja_PM.config(state=tk.DISABLED)
-        self.caja_PC.config(state=tk.DISABLED)
+        # Variable para almacenar resultados
+        self.resultados_texto = ""
+
+        # Crear la interfaz
+        self._crear_interfaz()
 
         self.raiz.mainloop()
+
+    def _crear_interfaz(self):
+        """Crea todos los componentes de la interfaz gráfica."""
+        # Frame principal con padding
+        main_frame = ttk.Frame(self.raiz, padding="10")
+        main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+
+        # Configurar peso de filas y columnas para redimensionamiento
+        self.raiz.columnconfigure(0, weight=1)
+        self.raiz.rowconfigure(0, weight=1)
+        main_frame.columnconfigure(0, weight=1)
+        main_frame.columnconfigure(1, weight=1)
+
+        # Sección de Parámetros
+        self._crear_seccion_parametros(main_frame)
+
+        # Sección de Control
+        self._crear_seccion_control(main_frame)
+
+        # Sección de Resultados
+        self._crear_seccion_resultados(main_frame)
+
+        # Barra de progreso
+        self.progress = ttk.Progressbar(main_frame, mode='indeterminate')
+        self.progress.grid(row=3, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=5)
+        self.progress.grid_remove()  # Ocultar inicialmente
+
+    def _crear_seccion_parametros(self, parent):
+        """Crea la sección de parámetros de configuración."""
+        frame_params = ttk.LabelFrame(parent, text="Parámetros del Algoritmo", padding="10")
+        frame_params.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N), pady=5)
+
+        # Columna izquierda
+        ttk.Label(frame_params, text="Número de Reinas:").grid(row=0, column=0, sticky=tk.W, pady=5)
+        self.caja_nr = ttk.Entry(frame_params, width=15)
+        self.caja_nr.grid(row=0, column=1, sticky=tk.W, padx=5, pady=5)
+        self.caja_nr.insert(0, "8")
+
+        ttk.Label(frame_params, text="Número de Individuos:").grid(row=1, column=0, sticky=tk.W, pady=5)
+        self.caja_po = ttk.Entry(frame_params, width=15)
+        self.caja_po.grid(row=1, column=1, sticky=tk.W, padx=5, pady=5)
+        self.caja_po.insert(0, "1000")
+
+        ttk.Label(frame_params, text="Número de Generaciones:").grid(row=2, column=0, sticky=tk.W, pady=5)
+        self.caja_re = ttk.Entry(frame_params, width=15)
+        self.caja_re.grid(row=2, column=1, sticky=tk.W, padx=5, pady=5)
+        self.caja_re.insert(0, "1000")
+
+        # Columna derecha
+        ttk.Label(frame_params, text="Probabilidad de Cruce:").grid(row=0, column=2, sticky=tk.W, padx=(20, 0), pady=5)
+        self.caja_pc = ttk.Entry(frame_params, width=15)
+        self.caja_pc.grid(row=0, column=3, sticky=tk.W, padx=5, pady=5)
+        self.caja_pc.insert(0, "0.85")
+
+        ttk.Label(frame_params, text="Probabilidad de Mutación:").grid(row=1, column=2, sticky=tk.W, padx=(20, 0), pady=5)
+        self.caja_pm = ttk.Entry(frame_params, width=15)
+        self.caja_pm.grid(row=1, column=3, sticky=tk.W, padx=5, pady=5)
+        self.caja_pm.insert(0, "0.1")
+
+        self.caja_pm.config(state=tk.DISABLED)
+        self.caja_pc.config(state=tk.DISABLED)
+
+    def _crear_seccion_control(self, parent):
+        """Crea la sección de botones de control."""
+        frame_control = ttk.Frame(parent, padding="5")
+        frame_control.grid(row=1, column=0, columnspan=2, pady=10)
+
+        self.boton_iniciar = ttk.Button(
+            frame_control,
+            text="Iniciar Algoritmo",
+            command=self._ejecutar_algoritmo,
+            width=20
+        )
+        self.boton_iniciar.grid(row=0, column=0, padx=5)
+
+        self.boton_copiar = ttk.Button(
+            frame_control,
+            text="Copiar Resultados",
+            command=self._copiar_resultados,
+            width=20,
+            state='disabled'
+        )
+        self.boton_copiar.grid(row=0, column=1, padx=5)
+
+        self.boton_salir = ttk.Button(
+            frame_control,
+            text="Salir",
+            command=self.raiz.destroy,
+            width=20
+        )
+        self.boton_salir.grid(row=0, column=2, padx=5)
+
+    def _crear_seccion_resultados(self, parent):
+        """Crea la sección de visualización de resultados."""
+        frame_resultados = ttk.LabelFrame(parent, text="Resultados", padding="10")
+        frame_resultados.grid(row=2, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S), pady=5)
+
+        # Configurar expansión
+        parent.rowconfigure(2, weight=1)
+        frame_resultados.columnconfigure(0, weight=1)
+        frame_resultados.rowconfigure(0, weight=1)
+
+        # Área de texto con scroll
+        self.texto_resultados = scrolledtext.ScrolledText(
+            frame_resultados,
+            wrap=tk.WORD,
+            width=70,
+            height=15,
+            font=('Courier', 9),
+            bg='#ffffff',
+            fg='#000000'
+        )
+        self.texto_resultados.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        self.texto_resultados.insert('1.0', 'Presione "Iniciar Algoritmo" para comenzar...')
+        self.texto_resultados.config(state='disabled')
+
+    def _ejecutar_algoritmo(self):
+        """Wrapper para ejecutar el algoritmo en el hilo principal con feedback visual."""
+        # Deshabilitar botones durante ejecución
+        self.boton_iniciar.config(state='disabled')
+        self.boton_copiar.config(state='disabled')
+
+        # Mostrar barra de progreso
+        self.progress.grid()
+        self.progress.start(10)
+
+        # Limpiar resultados anteriores
+        self.texto_resultados.config(state='normal')
+        self.texto_resultados.delete('1.0', tk.END)
+        self.texto_resultados.insert('1.0', 'Ejecutando algoritmo genético...\n\n')
+        self.texto_resultados.config(state='disabled')
+
+        # Actualizar interfaz
+        self.raiz.update()
+
+        # Ejecutar algoritmo
+        try:
+            self.algoritmo()
+        except Exception as e:
+            messagebox.showerror("Error", f"Error durante la ejecución: {str(e)}")
+
+        # Ocultar barra de progreso
+        self.progress.stop()
+        self.progress.grid_remove()
+
+        # Habilitar botones
+        self.boton_iniciar.config(state='normal')
+        self.boton_copiar.config(state='normal')
+
+    def _copiar_resultados(self):
+        """Copia los resultados al portapapeles."""
+        self.raiz.clipboard_clear()
+        self.raiz.clipboard_append(self.resultados_texto)
+        messagebox.showinfo("Éxito", "Resultados copiados al portapapeles")
+
+    def _actualizar_resultados(self, texto):
+        """Actualiza el área de resultados con nuevo texto."""
+        self.texto_resultados.config(state='normal')
+        self.texto_resultados.insert(tk.END, texto)
+        self.texto_resultados.see(tk.END)  # Scroll automático al final
+        self.texto_resultados.config(state='disabled')
+        self.raiz.update()
 
     def _inicializar_poblacion(self, tamano_poblacion, num_reinas):
         """
@@ -66,10 +198,15 @@ class Aplicacion():  # creacion de la ventana
             Lista con la población inicial
         """
         poblacion = []
+        self._actualizar_resultados("Inicializando población...\n")
         for i in range(tamano_poblacion):
             individuo = Funciones.generar_individuo(num_reinas + 1)
             poblacion.append(individuo)
-            print(f"Individuo {i + 1}: {individuo}")
+            if i < 10:  # Mostrar solo los primeros 10
+                self._actualizar_resultados(f"Individuo {i + 1}: {individuo}\n")
+        if tamano_poblacion > 10:
+            self._actualizar_resultados(f"... ({tamano_poblacion - 10} individuos más)\n")
+        self._actualizar_resultados("\n")
         return poblacion
 
     def _aplicar_cruce(self, ganadores, poblacion, num_reinas, prob_cruce_configurada):
@@ -153,11 +290,20 @@ class Aplicacion():  # creacion de la ventana
             Tupla (índice del mejor, fitness del mejor)
         """
         mejor_idx = 0
+        resultados = "Población final:\n" + "="*50 + "\n"
+
         for i in range(tamano_poblacion):
-            print(f"Individuo {i + 1}: {poblacion[i]}, Fitness: {fitness[i]}")
+            linea = f"Individuo {i + 1}: {poblacion[i]}, Fitness: {fitness[i]}\n"
+            print(linea.strip())
+            if i < 20:  # Mostrar solo los primeros 20 en interfaz
+                resultados += linea
             if fitness[mejor_idx] > fitness[i]:
                 mejor_idx = i
 
+        if tamano_poblacion > 20:
+            resultados += f"... ({tamano_poblacion - 20} individuos más)\n"
+
+        self._actualizar_resultados(resultados + "\n")
         return mejor_idx, fitness[mejor_idx]
 
     def _guardar_resultados(self, poblacion, fitness, tamano_poblacion):
@@ -186,34 +332,41 @@ class Aplicacion():  # creacion de la ventana
             mejor_fitness: Fitness del mejor individuo
             num_soluciones_optimas: Número de soluciones con fitness 0
         """
-        print("-------------------------Fin-----------------------------------")
-        print(f"Lapso de tiempo: {tiempo_ejecucion:.10f} segundos.")
-        print(f"Número de individuos con fitness 0: {num_soluciones_optimas}")
-        print(f"Ganador: {mejor_individuo}, Fitness: {mejor_fitness}, Autor Andres707")
+        print("="*60)
+        print("RESULTADOS FINALES")
+        print("="*60)
+        print(f"Tiempo de ejecución: {tiempo_ejecucion:.6f} segundos")
+        print(f"Soluciones óptimas encontradas (fitness=0): {num_soluciones_optimas}")
+        print(f"Mejor individuo: {mejor_individuo}")
+        print(f"Fitness del mejor: {mejor_fitness}")
+        print("Autor: Andres707")
+        print("="*60)
 
-        texto_ganador = f"Ganador: {mejor_individuo}, Fitness: {mejor_fitness}"
-
-        self.mensajeLT = Label(
-            self.raiz,
-            text=f"Lapso de tiempo: {tiempo_ejecucion:.10f} segundos.",
-            fg="black"
+        # Formatear resultados para la interfaz y portapapeles
+        self.resultados_texto = (
+            f"{'='*50}\n"
+            f"RESULTADOS FINALES\n"
+            f"{'='*50}\n"
+            f"Tiempo de ejecución: {tiempo_ejecucion:.6f} segundos\n"
+            f"Soluciones óptimas (fitness=0): {num_soluciones_optimas}\n"
+            f"Mejor individuo: {mejor_individuo}\n"
+            f"Fitness del mejor: {mejor_fitness}\n"
+            f"Autor: Andres707\n"
+            f"{'='*50}\n"
         )
-        self.mensajeLT.pack()
-        self.mensajeG = Label(self.raiz, text=texto_ganador, fg="black")
-        self.mensajeG.pack()
-        self.mensajeLT.place(x=10, y=125)
-        self.mensajeG.place(x=10, y=150)
+
+        self._actualizar_resultados(self.resultados_texto)
 
     def algoritmo(self):
         """
         Ejecuta el algoritmo genético para resolver el problema de las N-Reinas.
         """
         # Obtener parámetros de configuración
-        tamano_poblacion = int(self.caja_PO.get())
-        num_reinas = int(self.caja_NR.get())
-        num_generaciones = int(self.caja_RE.get())
-        prob_cruce = float(self.caja_PC.get())
-        prob_mutacion = float(self.caja_PM.get())
+        tamano_poblacion = int(self.caja_po.get())
+        num_reinas = int(self.caja_nr.get())
+        num_generaciones = int(self.caja_re.get())
+        prob_cruce = float(self.caja_pc.get())
+        prob_mutacion = float(self.caja_pm.get())
 
         # Inicializar población
         tiempo_inicio = time()
@@ -221,8 +374,11 @@ class Aplicacion():  # creacion de la ventana
 
         # Evolución de la población
         num_soluciones_optimas = 0
+        self._actualizar_resultados("Iniciando evolución...\n\n")
+
         for generacion in range(num_generaciones):
-            print(f"Repeticion {generacion + 1}")
+            if generacion % 100 == 0:
+                self._actualizar_resultados(f"Generación {generacion + 1}/{num_generaciones}\n")
 
             # Evaluar fitness
             fitness = Funciones.calcular_fitness(poblacion, tamano_poblacion, num_reinas)
@@ -246,6 +402,8 @@ class Aplicacion():  # creacion de la ventana
         tiempo_ejecucion = time() - tiempo_inicio
 
         # Evaluación final
+        self._actualizar_resultados("\n" + "="*50 + "\n")
+        self._actualizar_resultados("Evaluación final...\n\n")
         fitness_final = Funciones.calcular_fitness(poblacion, tamano_poblacion, num_reinas)
         mejor_idx, mejor_fitness = self._encontrar_mejor_individuo(
             poblacion, fitness_final, tamano_poblacion

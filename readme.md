@@ -37,7 +37,7 @@ El problema de las N-Reinas consiste en colocar N reinas en un tablero de ajedre
 1. **Clonar el repositorio**
 ```bash
 
-git clone https://github.com/tuusuario/NReinas.git
+git clone https://github.com/Andres-Julian-7/NReainas.git
 cd NReinas
 ```
 

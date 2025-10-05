@@ -480,3 +480,149 @@ Individuo 788: [6, 4, 0, 7, 5, 2, 8, 1], Fitness: 0.0
 Individuo 798: [5, 8, 0, 3, 6, 2, 7, 1, 4], Fitness: 0.0
 Individuo 978: [2, 5, 8, 6, 0, 3, 7, 4, 1], Fitness: 0.0
 
+Individuo 35: [3, 1, 4, 7, 5, 0, 2, 6, 8], Fitness: 0.0
+Individuo 256: [1, 5, 8, 6, 3, 7, 2, 4, 0], Fitness: 0.0
+Individuo 263: [0, 6, 8, 1, 5, 7, 2, 4], Fitness: 0.0
+Individuo 310: [4, 2, 5, 8, 1, 3, 0, 7], Fitness: 0.0
+Individuo 383: [3, 7, 2, 8, 5, 1, 4, 6], Fitness: 0.0
+Individuo 513: [6, 8, 3, 1, 7, 5, 2, 0, 4], Fitness: 0.0
+Individuo 894: [1, 7, 2, 8, 6, 0, 3, 5, 4], Fitness: 0.0
+Individuo 1090: [2, 7, 3, 8, 0, 5, 1, 6, 4], Fitness: 0.0
+Individuo 1162: [2, 5, 8, 0, 7, 3, 1, 6, 4], Fitness: 0.0
+Individuo 1194: [4, 7, 3, 6, 2, 5, 8, 0, 1], Fitness: 0.0
+Individuo 1350: [8, 5, 1, 4, 6, 0, 3, 7], Fitness: 0.0
+Individuo 1356: [7, 4, 1, 8, 6, 3, 0, 2], Fitness: 0.0
+Individuo 1367: [4, 6, 3, 0, 7, 5, 8, 2], Fitness: 0.0
+Individuo 1436: [3, 6, 4, 1, 5, 0, 2, 7], Fitness: 0.0
+Individuo 1470: [2, 0, 5, 3, 8, 6, 4, 1, 7], Fitness: 0.0
+Individuo 1548: [4, 7, 0, 3, 1, 8, 5, 2, 6], Fitness: 0.0
+Individuo 1574: [4, 2, 8, 3, 1, 7, 5, 0, 6], Fitness: 0.0
+Individuo 1655: [2, 7, 3, 8, 0, 4, 1, 5, 6], Fitness: 0.0
+Individuo 1735: [1, 3, 6, 0, 2, 8, 5, 7], Fitness: 0.0
+Individuo 1812: [8, 4, 2, 0, 5, 7, 1, 6, 3], Fitness: 0.0
+Individuo 1908: [7, 2, 0, 5, 1, 4, 6, 3, 8], Fitness: 0.0
+Individuo 1939: [2, 6, 8, 3, 1, 4, 7, 5, 0], Fitness: 0.0
+Individuo 1954: [7, 3, 6, 8, 1, 5, 0, 2, 4], Fitness: 0.0
+Individuo 1969: [8, 5, 1, 4, 6, 0, 3, 7], Fitness: 0.0
+Individuo 2006: [4, 7, 0, 3, 6, 2, 5, 8], Fitness: 0.0
+Individuo 2075: [2, 5, 3, 8, 0, 4, 6, 1, 7], Fitness: 0.0
+Individuo 2149: [3, 8, 2, 4, 6, 0, 5, 1, 7], Fitness: 0.0
+Individuo 2157: [2, 8, 5, 3, 0, 6, 4, 1, 7], Fitness: 0.0
+Individuo 2291: [8, 1, 7, 4, 2, 0, 5, 3, 6], Fitness: 0.0
+Individuo 2388: [8, 1, 4, 6, 3, 0, 7, 5], Fitness: 0.0
+Individuo 2599: [3, 0, 6, 4, 1, 5, 8, 2], Fitness: 0.0
+Individuo 2731: [7, 3, 6, 8, 1, 5, 0, 2, 4], Fitness: 0.0
+Individuo 2737: [5, 2, 8, 3, 0, 7, 1, 4, 6], Fitness: 0.0
+Individuo 2769: [4, 0, 5, 3, 1, 6, 8, 2, 7], Fitness: 0.0
+Individuo 2898: [4, 1, 5, 8, 6, 3, 7, 2, 0], Fitness: 0.0
+Individuo 2949: [3, 1, 7, 5, 8, 0, 4, 6, 2], Fitness: 0.0
+Individuo 2983: [2, 5, 8, 0, 7, 3, 1, 6, 4], Fitness: 0.0
+Individuo 3109: [7, 5, 8, 1, 4, 0, 3, 6], Fitness: 0.0
+Individuo 3158: [3, 6, 2, 7, 5, 0, 8, 4, 1], Fitness: 0.0
+Individuo 3221: [4, 0, 3, 5, 2, 8, 1, 7, 6], Fitness: 0.0
+Individuo 3289: [3, 1, 4, 7, 5, 0, 2, 6, 8], Fitness: 0.0
+Individuo 3311: [3, 5, 8, 2, 0, 6, 1, 7, 4], Fitness: 0.0
+Individuo 3437: [5, 7, 2, 0, 3, 1, 4, 8, 6], Fitness: 0.0
+Individuo 3474: [3, 1, 6, 2, 0, 7, 4, 8, 5], Fitness: 0.0
+Individuo 3573: [1, 3, 7, 0, 8, 5, 2, 6], Fitness: 0.0
+Individuo 3595: [8, 5, 2, 6, 1, 7, 4, 0, 3], Fitness: 0.0
+Individuo 3636: [6, 3, 0, 7, 5, 8, 2, 4, 1], Fitness: 0.0
+Individuo 3744: [4, 6, 0, 3, 1, 7, 5, 8], Fitness: 0.0
+Individuo 3788: [2, 5, 3, 1, 7, 4, 6, 0], Fitness: 0.0
+Individuo 3960: [2, 7, 3, 8, 0, 4, 1, 5, 6], Fitness: 0.0
+Individuo 3970: [3, 5, 0, 8, 1, 4, 2, 7, 6], Fitness: 0.0
+Individuo 4022: [2, 7, 3, 8, 0, 4, 1, 5, 6], Fitness: 0.0
+Individuo 4212: [0, 3, 7, 4, 1, 8, 2, 5, 6], Fitness: 0.0
+Individuo 4213: [6, 3, 0, 7, 5, 8, 2, 4], Fitness: 0.0
+Individuo 4293: [4, 8, 5, 3, 1, 7, 2, 6, 0], Fitness: 0.0
+Individuo 4397: [3, 5, 0, 8, 1, 4, 2, 7, 6], Fitness: 0.0
+Individuo 4437: [6, 1, 3, 5, 0, 8, 4, 2, 7], Fitness: 0.0
+Individuo 4438: [0, 4, 1, 8, 6, 3, 7, 2], Fitness: 0.0
+Individuo 4476: [4, 6, 3, 0, 2, 7, 5, 1, 8], Fitness: 0.0
+Individuo 4550: [6, 0, 5, 8, 1, 3, 7, 2, 4], Fitness: 0.0
+Individuo 4552: [7, 1, 4, 6, 0, 3, 5, 8, 2], Fitness: 0.0
+Individuo 4750: [4, 7, 3, 8, 6, 2, 0, 5, 1], Fitness: 0.0
+Individuo 4755: [5, 1, 4, 0, 8, 3, 7, 2, 6], Fitness: 0.0
+Individuo 4784: [3, 8, 4, 7, 1, 6, 2, 0, 5], Fitness: 0.0
+Individuo 4790: [4, 7, 3, 8, 6, 2, 0, 5, 1], Fitness: 0.0
+Individuo 4832: [6, 1, 3, 0, 7, 4, 8, 5, 2], Fitness: 0.0
+Individuo 4840: [3, 7, 0, 4, 6, 1, 5, 2, 8], Fitness: 0.0
+Individuo 4874: [6, 2, 7, 1, 4, 8, 5, 0, 3], Fitness: 0.0
+Individuo 4897: [4, 8, 5, 3, 1, 7, 2, 6, 0], Fitness: 0.0
+Individuo 4944: [2, 7, 3, 8, 0, 5, 1, 6, 4], Fitness: 0.0
+Individuo 4960: [7, 4, 2, 8, 6, 1, 3, 5, 0], Fitness: 0.0
+Individuo 4978: [4, 8, 0, 3, 1, 7, 2, 6, 5], Fitness: 0.0
+Individuo 4997: [3, 5, 8, 2, 0, 6, 1, 7], Fitness: 0.0
+Individuo 5020: [3, 5, 2, 8, 6, 4, 7, 0], Fitness: 0.0
+Individuo 5210: [5, 3, 8, 0, 2, 4, 6, 1, 7], Fitness: 0.0
+Individuo 5442: [6, 1, 5, 7, 0, 3, 8, 4, 2], Fitness: 0.0
+Individuo 5527: [5, 3, 0, 6, 8, 1, 7, 4], Fitness: 0.0
+Individuo 5567: [2, 5, 8, 0, 7, 4, 6, 1, 3], Fitness: 0.0
+Individuo 5601: [7, 1, 4, 6, 0, 3, 5, 8, 2], Fitness: 0.0
+Individuo 5706: [8, 5, 2, 6, 3, 0, 7, 4], Fitness: 0.0
+Individuo 5815: [4, 2, 8, 3, 1, 7, 5, 0, 6], Fitness: 0.0
+Individuo 5870: [6, 4, 1, 7, 5, 3, 8, 0, 2], Fitness: 0.0
+Individuo 6051: [5, 8, 6, 0, 3, 1, 4, 7], Fitness: 0.0
+Individuo 6059: [5, 2, 8, 6, 3, 7, 0, 4], Fitness: 0.0
+Individuo 6072: [4, 7, 3, 8, 6, 2, 0, 5, 1], Fitness: 0.0
+Individuo 6314: [0, 4, 1, 8, 6, 3, 7, 2, 5], Fitness: 0.0
+Individuo 6397: [2, 6, 3, 0, 8, 1, 5, 7, 4], Fitness: 0.0
+Individuo 6465: [6, 0, 3, 1, 8, 5, 2, 4], Fitness: 0.0
+Individuo 6485: [3, 5, 0, 8, 6, 4, 7, 1, 2], Fitness: 0.0
+Individuo 6490: [4, 7, 3, 8, 6, 2, 0, 5, 1], Fitness: 0.0
+Individuo 6517: [7, 0, 4, 6, 1, 5, 2, 8], Fitness: 0.0
+Individuo 6618: [3, 7, 4, 2, 0, 5, 1, 8, 6], Fitness: 0.0
+Individuo 6624: [4, 7, 3, 8, 6, 2, 0, 5, 1], Fitness: 0.0
+Individuo 6714: [3, 6, 8, 1, 5, 7, 2, 4], Fitness: 0.0
+Individuo 6719: [5, 3, 8, 0, 2, 4, 6, 1, 7], Fitness: 0.0
+Individuo 6756: [4, 0, 3, 6, 2, 5, 8, 1, 7], Fitness: 0.0
+Individuo 6827: [4, 1, 8, 5, 2, 0, 3, 6], Fitness: 0.0
+Individuo 6921: [0, 2, 7, 5, 8, 1, 4, 6, 3], Fitness: 0.0
+Individuo 7118: [7, 3, 1, 6, 8, 5, 0, 4, 2], Fitness: 0.0
+Individuo 7180: [2, 5, 3, 8, 0, 4, 6, 1], Fitness: 0.0
+Individuo 7194: [7, 4, 2, 5, 8, 6, 0, 3, 1], Fitness: 0.0
+Individuo 7200: [0, 4, 1, 8, 6, 3, 7, 2], Fitness: 0.0
+Individuo 7202: [3, 6, 2, 5, 8, 0, 7, 4, 1], Fitness: 0.0
+Individuo 7212: [4, 7, 1, 8, 5, 2, 6, 3, 0], Fitness: 0.0
+Individuo 7225: [3, 5, 0, 8, 1, 4, 2, 7, 6], Fitness: 0.0
+Individuo 7228: [4, 1, 8, 5, 2, 0, 3, 6], Fitness: 0.0
+Individuo 7272: [1, 3, 6, 0, 2, 8, 5, 7], Fitness: 0.0
+Individuo 7317: [2, 7, 3, 8, 0, 4, 1, 5], Fitness: 0.0
+Individuo 7357: [8, 0, 4, 1, 5, 2, 6, 3], Fitness: 0.0
+Individuo 7389: [6, 3, 7, 4, 8, 0, 5, 1], Fitness: 0.0
+Individuo 7470: [1, 5, 7, 2, 0, 8, 6, 4, 3], Fitness: 0.0
+Individuo 7477: [5, 3, 0, 6, 8, 1, 7, 4], Fitness: 0.0
+Individuo 7511: [1, 6, 8, 0, 4, 7, 5, 2], Fitness: 0.0
+Individuo 7732: [0, 6, 8, 1, 5, 7, 2, 4, 3], Fitness: 0.0
+Individuo 7790: [4, 7, 0, 3, 5, 2, 8, 6, 1], Fitness: 0.0
+Individuo 7943: [4, 0, 3, 6, 2, 5, 8, 1, 7], Fitness: 0.0
+Individuo 8013: [4, 8, 5, 2, 6, 3, 0, 7], Fitness: 0.0
+Individuo 8197: [5, 3, 8, 0, 2, 6, 1, 7], Fitness: 0.0
+Individuo 8214: [0, 3, 7, 4, 1, 8, 2, 5], Fitness: 0.0
+Individuo 8229: [3, 6, 2, 7, 5, 1, 8, 4, 0], Fitness: 0.0
+Individuo 8453: [0, 3, 6, 2, 5, 8, 1, 4, 7], Fitness: 0.0
+Individuo 8462: [3, 0, 6, 8, 1, 5, 7, 2, 4], Fitness: 0.0
+Individuo 8477: [6, 1, 5, 7, 0, 3, 8, 2, 4], Fitness: 0.0
+Individuo 8502: [6, 1, 3, 7, 0, 8, 5, 2, 4], Fitness: 0.0
+Individuo 8531: [1, 6, 0, 7, 4, 8, 5, 2], Fitness: 0.0
+Individuo 8702: [8, 4, 2, 0, 5, 7, 1, 3, 6], Fitness: 0.0
+Individuo 8780: [7, 3, 1, 6, 8, 0, 2, 4], Fitness: 0.0
+Individuo 8864: [6, 1, 7, 4, 8, 0, 5, 3], Fitness: 0.0
+Individuo 8951: [8, 5, 3, 6, 0, 7, 1, 4], Fitness: 0.0
+Individuo 9027: [0, 4, 6, 8, 5, 7, 1, 3], Fitness: 0.0
+Individuo 9117: [8, 1, 4, 7, 0, 6, 3, 5], Fitness: 0.0
+Individuo 9141: [3, 1, 7, 4, 6, 0, 2, 5], Fitness: 0.0
+Individuo 9225: [0, 2, 5, 7, 1, 3, 8, 6, 4], Fitness: 0.0
+Individuo 9231: [5, 3, 8, 0, 2, 4, 6, 1, 7], Fitness: 0.0
+Individuo 9281: [0, 6, 8, 1, 5, 7, 2, 4, 3], Fitness: 0.0
+Individuo 9304: [3, 6, 2, 7, 5, 0, 8, 1, 4], Fitness: 0.0
+Individuo 9426: [3, 8, 6, 4, 2, 0, 5, 7, 1], Fitness: 0.0
+Individuo 9582: [4, 1, 8, 5, 2, 0, 3, 6], Fitness: 0.0
+Individuo 9593: [6, 2, 0, 5, 7, 4, 1, 3, 8], Fitness: 0.0
+Individuo 9609: [5, 3, 8, 0, 2, 4, 6, 1, 7], Fitness: 0.0
+Individuo 9780: [8, 4, 2, 0, 6, 1, 7, 5, 3], Fitness: 0.0
+Individuo 9821: [5, 8, 2, 0, 3, 6, 4, 1, 7], Fitness: 0.0
+Individuo 9836: [8, 5, 3, 6, 0, 7, 1, 4], Fitness: 0.0
+Individuo 9932: [4, 8, 5, 3, 1, 7, 2, 6, 0], Fitness: 0.0
+Individuo 9994: [5, 2, 0, 7, 3, 8, 6, 4, 1], Fitness: 0.0
+

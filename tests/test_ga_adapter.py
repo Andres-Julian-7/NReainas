@@ -52,3 +52,4 @@ class TestGaFunctionsAdapter(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+    # python - m unittest discover - s tests - p 'test_*.py'

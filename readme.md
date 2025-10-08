@@ -106,18 +106,36 @@ Una vez ejecutado, aparecerá una ventana con los siguientes parámetros configu
 4. Observa el progreso en el área de resultados
 5. Una vez finalizado, revisa las métricas y usa **Copiar Resultados** si lo deseas
 
-## 📁 Estructura del Proyecto
+## 📁 Estructura del Proyecto (Clean Architecture)
 
 ```
 NReinas/
 │
-├── main.py                 # Interfaz gráfica y lógica principal
-├── Funciones.py            # Operadores del algoritmo genético
-├── Ganadores.txt           # Archivo de salida con soluciones óptimas
-├── readme.md               # Este archivo
-├── .gitignore             # Archivos ignorados por Git
-└── .venv/                 # Entorno virtual (no incluido en repo)
+├── application/                         # Capa de aplicación (casos de uso)
+│   └── use_cases/
+│       └── solve_nqueens.py             # NQueensSolver (caso de uso principal)
+│
+├── domain/                              # Capa de dominio (reglas de negocio)
+│   └── services/
+│       └── ga_functions_adapter.py      # Adaptador a Funciones.py (servicios del dominio)
+│
+├── infrastructure/                      # Capa de infraestructura
+│   └── ui/
+│       └── main_app.py                  # Interfaz de usuario (Tkinter)
+│
+├── Funciones.py                         # Implementación existente de operadores GA (reutilizada)
+├── Ganadores.txt                        # Archivo de salida con soluciones óptimas
+├── main.py                              # Bootstrap: entra a infraestructura/ui
+├── readme.md                            # Este archivo
+├── .gitignore                           # Archivos ignorados por Git
+└── .venv/                               # Entorno virtual (no incluido en repo)
 ```
+
+### Principios aplicados
+- Independencia del framework: Tkinter queda en infraestructura.
+- Separación de capas: UI no conoce detalles del algoritmo; usa el caso de uso.
+- Reglas de negocio en el centro: la evolución/GA se orquesta en application usando servicios de dominio.
+- Sustituibilidad: `Funciones.py` se usa vía un adaptador; se puede reemplazar por otra implementación sin tocar capas superiores.
 
 
 ## 🧬 Algoritmo Genético

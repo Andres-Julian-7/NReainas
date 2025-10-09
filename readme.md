@@ -2,6 +2,7 @@
 
 ![Python](https://img.shields.io/badge/Python-3.12.8-blue.svg)
 ![Status](https://img.shields.io/badge/Status-Active-success.svg)
+![Architecture](https://img.shields.io/badge/Architecture-Clean%20Architecture-green.svg)
 
 Implementación de un **Algoritmo Genético** con interfaz gráfica para resolver el clásico problema de las N-Reinas utilizando técnicas de computación evolutiva.
 
@@ -38,7 +39,7 @@ El problema de las N-Reinas consiste en colocar N reinas en un tablero de ajedre
 ```bash
 
 git clone https://github.com/Andres-Julian-7/NReainas.git
-cd NReinas
+cd NReainas
 ```
 
 
@@ -130,6 +131,50 @@ NReinas/
 ├── .gitignore                           # Archivos ignorados por Git
 └── .venv/                               # Entorno virtual (no incluido en repo)
 ```
+
+## 🆕 Nuevas funciones (API pública)
+
+### Dominio: domain/services/ga_functions_adapter.py
+Estas funciones exponen una interfaz estable que envuelve la implementación existente en Funciones.py:
+- generar_individuo(tamano: int) -> List[int]
+- calcular_fitness(poblacion: List[List[int]], tamano_poblacion: int, num_reinas: int) -> List[int]
+- torneo(fitness: List[int], tamano_poblacion: int) -> Tuple[int, int]
+- cruce(ganadores: Tuple[int, int], poblacion: List[List[int]], num_reinas: int) -> List[List[int]]
+- mutar_individuo(individuo: List[int], num_reinas: int) -> List[int]
+- generar_probabilidad() -> float
+- seleccionar_con_torneo_agrupado(hijo: List[int], poblacion: List[List[int]], tamano_poblacion: int, num_reinas: int, fitness: List[int]) -> List[List[int]]
+
+### Aplicación: application/use_cases/solve_nqueens.py
+- NQueensParams: parámetros de ejecución (tamano_poblacion, num_reinas, num_generaciones, prob_cruce, prob_mutacion)
+- NQueensResult: resultado de la ejecución (poblacion_final, fitness_final, mejor_idx, mejor_fitness, num_soluciones_optimas, tiempo_ejecucion)
+- NQueensSolver:
+  - run(params: NQueensParams, progress: Callable[[str], None] | None = None) -> NQueensResult
+  - progress: callback opcional para recibir logs en tiempo real (por ejemplo, print)
+
+Ejemplo de uso programático (sin GUI):
+
+```python
+from application.use_cases.solve_nqueens import NQueensSolver, NQueensParams
+
+def log(msg: str):
+    print(msg, end="")
+
+solver = NQueensSolver()
+params = NQueensParams(
+    tamano_poblacion=200,
+    num_reinas=8,
+    num_generaciones=1000,
+    prob_cruce=0.85,
+    prob_mutacion=0.10,
+)
+resultado = solver.run(params, progress=log)
+
+print("Mejor fitness:", resultado.mejor_fitness)
+print("Mejor individuo:", resultado.poblacion_final[resultado.mejor_idx])
+print("Tiempo (s):", round(resultado.tiempo_ejecucion, 3))
+```
+
+La entrada estándar por GUI sigue disponible ejecutando main.py, que levanta infrastructure/ui/main_app.py.
 
 ### Principios aplicados
 - Independencia del framework: Tkinter queda en infraestructura.

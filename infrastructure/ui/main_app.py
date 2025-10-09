@@ -184,7 +184,44 @@ class Aplicacion:
                 if 0 <= fila < n:
                     x = inicio_x + (columna * tamano_casilla)
                     y = inicio_y + (fila * tamano_casilla)
+                    # Centro de la casilla de la reina
+                    cx = x + tamano_casilla / 2
+                    cy = y + tamano_casilla / 2
+                    # Dibujar la reina
                     self._dibujar_reina_turtle(pen, x, y, tamano_casilla, color_reina)
+
+                    # Líneas rojas punteadas (filas, columnas y diagonales)
+                    min_x, max_x = inicio_x, inicio_x + tablero_px
+                    min_y, max_y = inicio_y, inicio_y + tablero_px
+
+                    def _linea_punteada_desde(cx_, cy_, dx_, dy_, largo=8, espacio=6):
+                        # dx_,dy_ pueden ser cualquier escala; se normalizan
+                        d = math.hypot(dx_, dy_)
+                        if d == 0:
+                            return
+                        ux, uy = dx_ / d, dy_ / d
+                        px, py = cx_, cy_
+                        pen.pencolor("#FF3333")
+                        pen.pensize(2)
+                        while (min_x <= px <= max_x) and (min_y <= py <= max_y):
+                            nx, ny = px + ux * largo, py + uy * largo
+                            # Si el siguiente punto se sale del tablero, detenemos
+                            if not (min_x <= nx <= max_x and min_y <= ny <= max_y):
+                                break
+                            pen.penup()
+                            pen.goto(px, py)
+                            pen.pendown()
+                            pen.goto(nx, ny)
+                            px, py = nx + ux * espacio, ny + uy * espacio
+                        pen.penup()
+
+                    # Direcciones: solo diagonales
+                    dirs = [
+                        (1, 1), (-1, 1),
+                        (1, -1), (-1, -1),
+                    ]
+                    for dx, dy in dirs:
+                        _linea_punteada_desde(cx, cy, dx, dy)
 
             # Coordenadas
             if con_coordenadas:
@@ -206,7 +243,7 @@ class Aplicacion:
             # Título
             pen.goto(0, inicio_y + tablero_px + 20)
             pen.pencolor(color_texto)
-            titulo = "♔ Problema de las 8 Reinas ♛" if n == 8 else f"♔ Problema de las {n} Reinas ♛"
+            titulo = "♔ Problema de las 8 Reinas ♛" if n == 8 else f"♔ Problema de las {n-1} Reinas ♛"
             pen.write(titulo, align="center", font=("Arial", int(tamano_casilla * 0.4), "bold"))
 
             # Finalizar dibujo

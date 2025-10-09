@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, scrolledtext, messagebox
 from typing import Callable
+import turtle as t
+import math
 
 from application.use_cases.solve_nqueens import NQueensParams, NQueensResult, NQueensSolver
 
@@ -94,6 +96,125 @@ class Aplicacion:
         self.texto_resultados.config(state='disabled')
         self.raiz.update()
 
+    # Dibujo con turtle (adaptado del ejemplo proporcionado)
+    def _dibujar_reina_turtle(self, pen: t.Turtle, x: float, y: float, tamano: int, color_reina: str = "#98FF98"):
+        pen.penup()
+        pen.goto(x + tamano // 2, y + tamano // 2 - tamano // 4)
+        pen.pencolor(color_reina)
+        pen.pendown()
+        pen.write("♛", align="center", font=("Arial", int(tamano * 0.7), "bold"))
+        pen.penup()
+
+    def _tablero_ajedrez_con_reinas_turtle(self, posiciones_reinas, tamano_casilla: int = 60, con_coordenadas: bool = True, estilo: str = "clasico"):
+        try:
+            n = len(posiciones_reinas)
+            if n == 0:
+                return
+            # Configurar pantalla y turtle
+            screen = t.Screen()
+            screen.title(f"Problema de las {n} Reinas")
+            screen.bgcolor("black")
+            screen.tracer(False)
+            pen = t.Turtle(visible=False)
+            pen.speed(0)
+            pen.penup()
+
+            # Estilos
+            if estilo == "clasico":
+                color_claro = "#F0D9B5"
+                color_oscuro = "#B58863"
+                color_borde = "#8B4513"
+                color_texto = "white"
+                color_reina = "#0047AB"
+            elif estilo == "madera":
+                color_claro = "#DEB887"
+                color_oscuro = "#8B4513"
+                color_borde = "#654321"
+                color_texto = "white"
+                color_reina = "#FFD700"
+            elif estilo == "neon":
+                color_claro = "#00FFFF"
+                color_oscuro = "#FF00FF"
+                color_borde = "#FFD700"
+                color_texto = "#FFD700"
+                color_reina = "#00FF00"
+            else:
+                color_claro = "white"
+                color_oscuro = "black"
+                color_borde = "gray"
+                color_texto = "white"
+                color_reina = "#FFD700"
+
+            tablero_px = tamano_casilla * n
+            inicio_x = -tablero_px / 2
+            inicio_y = -tablero_px / 2
+
+            # Borde
+            pen.goto(inicio_x - 10, inicio_y - 10)
+            pen.pendown()
+            pen.pencolor(color_borde)
+            pen.pensize(5)
+            pen.fillcolor(color_borde)
+            pen.begin_fill()
+            for _ in range(4):
+                pen.forward(tablero_px + 20)
+                pen.left(90)
+            pen.end_fill()
+            pen.penup()
+
+            # Casillas
+            for fila in range(n):
+                for columna in range(n):
+                    color_casilla = color_claro if (fila + columna) % 2 == 0 else color_oscuro
+                    x = inicio_x + (columna * tamano_casilla)
+                    y = inicio_y + (fila * tamano_casilla)
+                    pen.goto(x, y)
+                    pen.pendown()
+                    pen.fillcolor(color_casilla)
+                    pen.setheading(0)
+                    pen.begin_fill()
+                    for _ in range(4):
+                        pen.forward(tamano_casilla)
+                        pen.left(90)
+                    pen.end_fill()
+                    pen.penup()
+
+            # Reinas
+            for columna, fila in enumerate(posiciones_reinas):
+                if 0 <= fila < n:
+                    x = inicio_x + (columna * tamano_casilla)
+                    y = inicio_y + (fila * tamano_casilla)
+                    self._dibujar_reina_turtle(pen, x, y, tamano_casilla, color_reina)
+
+            # Coordenadas
+            if con_coordenadas:
+                pen.pencolor(color_texto)
+                # letras
+                letras = [chr(ord('a') + i) for i in range(n)]
+                for i, letra in enumerate(letras):
+                    x = inicio_x + (i * tamano_casilla) + (tamano_casilla // 2) - 5
+                    y = inicio_y - 30
+                    pen.goto(x, y)
+                    pen.write(letra, font=("Arial", int(tamano_casilla * 0.3), "bold"))
+                # numeros
+                for i in range(n):
+                    x = inicio_x - 25
+                    y = inicio_y + (i * tamano_casilla) + (tamano_casilla // 2) - 8
+                    pen.goto(x, y)
+                    pen.write(str(i + 1), font=("Arial", int(tamano_casilla * 0.3), "bold"))
+
+            # Título
+            pen.goto(0, inicio_y + tablero_px + 20)
+            pen.pencolor(color_texto)
+            titulo = "♔ Problema de las 8 Reinas ♛" if n == 8 else f"♔ Problema de las {n} Reinas ♛"
+            pen.write(titulo, align="center", font=("Arial", int(tamano_casilla * 0.4), "bold"))
+
+            # Finalizar dibujo
+            screen.update()
+            # No llamar a t.mainloop() para no bloquear la app de Tkinter
+        except Exception as e:
+            print(f"Aviso: error al dibujar con turtle: {e}")
+
     def _copiar_resultados(self):
         self.raiz.clipboard_clear()
         self.raiz.clipboard_append(self.resultados_texto)
@@ -154,6 +275,24 @@ class Aplicacion:
         )
         self.resultados_texto = resumen
         self._actualizar_resultados(resumen)
+
+        # Intentar dibujar el tablero con la mejor solución encontrada
+        try:
+            # Elegir una solución a dibujar: una óptima si existe, si no la mejor por fitness
+            solucion_a_dibujar = None
+            if result.num_soluciones_optimas > 0:
+                for i, fit in enumerate(result.fitness_final):
+                    if fit == 0:
+                        solucion_a_dibujar = result.poblacion_final[i]
+                        break
+            if solucion_a_dibujar is None:
+                solucion_a_dibujar = result.poblacion_final[result.mejor_idx]
+
+            # Dibujar
+            self._tablero_ajedrez_con_reinas_turtle(solucion_a_dibujar)
+        except Exception as e:
+            # No interrumpir la UI si falla el dibujo (por ejemplo, entorno sin GUI)
+            print(f"Aviso: No se pudo dibujar el tablero: {e}")
 
 
 def main():
